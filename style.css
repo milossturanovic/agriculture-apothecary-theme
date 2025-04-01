@@ -1,0 +1,24 @@
+/* Theme overwrties */
+
+
+.header-logo img{
+
+
+    height: 100px !important;
+    width: auto;
+}
+
+
+
+
+
+@media (max-width: 768px) {
+   
+.header-logo img{
+
+
+    height: 60px !important;
+    width: auto;
+}
+  }
+  

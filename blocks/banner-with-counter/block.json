@@ -1,0 +1,21 @@
+{
+    "name": "acf/banner-with-counter",
+    "title": "Banner with Counter Section",
+    "description": "A custom Banner with Counter area section block that uses ACF fields.",
+    "category": "formatting",
+    "icon": "cover-image",
+    "keywords": ["banner", "counter", "section"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "banner-with-counter.php"
+    },
+    "supports": {
+        "align": true,
+        "anchor": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview"
+        }
+    }
+}

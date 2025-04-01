@@ -1,0 +1,21 @@
+{
+    "name": "acf/product-area",
+    "title": "Product Area Section",
+    "description": "A custom product area section block that uses ACF fields.",
+    "category": "formatting",
+    "icon": "cover-image",
+    "keywords": ["product", "area", "section"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "product-area.php"
+    },
+    "supports": {
+        "align": true,
+        "anchor": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview"
+        }
+    }
+}

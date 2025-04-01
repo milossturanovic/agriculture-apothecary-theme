@@ -1,0 +1,21 @@
+{
+    "name": "acf/new-products",
+    "title": "New Products",
+    "description": "A custom new productssection block that uses ACF fields.",
+    "category": "formatting",
+    "icon": "cover-image",
+    "keywords": ["product", "new", "section"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "new-products.php"
+    },
+    "supports": {
+        "align": true,
+        "anchor": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview"
+        }
+    }
+}
