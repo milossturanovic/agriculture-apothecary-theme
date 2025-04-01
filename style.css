@@ -2,10 +2,9 @@
 
 
 .header-logo img{
-
-
     height: 100px !important;
     width: auto;
+    margin-right: 120px;
 }
 
 
@@ -15,10 +14,9 @@
 @media (max-width: 768px) {
    
 .header-logo img{
-
-
     height: 60px !important;
     width: auto;
+    margin-right: 0px;
 }
   }
   
