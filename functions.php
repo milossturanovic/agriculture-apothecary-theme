@@ -440,9 +440,7 @@ add_action('init', 'enable_page_excerpts');
 
 
 /* 
-
 additonal theme options
-
 
 */
 
