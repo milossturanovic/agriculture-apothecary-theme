@@ -86,25 +86,44 @@
 
 
 
-			<div class="header-middle py-30">
+			<div class="header-middle py-3">
 				<div class="container">
 					<div class="row align-items-center">
 						<div class="col-lg-12">
 							<div class="header-middle-wrap position-relative">
-								<div class="header-contact d-none d-lg-flex">
-									<i class="pe-7s-call"></i>
-									<a href="tel://+00-123-456-789">+00 123 456 789</a>
-								</div>
+
+
 
 								<?php
-								if (function_exists('the_custom_logo') && has_custom_logo()) {
-									$custom_logo_id = get_theme_mod('custom_logo');
-									$logo_url = wp_get_attachment_image_src($custom_logo_id, 'full')[0];
-									echo '<a href="' . esc_url(home_url('/')) . '" class="header-logo">';
-									echo '<img src="' . esc_url($logo_url) . '" alt="' . get_bloginfo('name') . '">';
-									echo '</a>';
-								}
+								$phone = get_field('phone_number', 'option');
+								$logo  = get_field('logo', 'option');
 								?>
+
+
+								<?php if ($phone): ?>
+									<?php
+									// Clean phone number for tel: link
+									$formatted_phone = preg_replace('/\D+/', '', $phone);
+									if (strpos($formatted_phone, '0') === 0) {
+										$formatted_phone = '+382' . substr($formatted_phone, 1);
+									}
+									?>
+									<div class="header-contact d-none d-lg-flex">
+										<i class="pe-7s-call"></i>
+										<a href="tel:<?php echo esc_attr($formatted_phone); ?>">
+											<?php echo esc_html($phone); ?>
+										</a>
+									</div>
+								<?php endif; ?>
+
+
+								<?php if ($logo): ?>
+									<a href="<?php echo esc_url(home_url('/')); ?>" class="header-logo">
+										<img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+									</a>
+								<?php endif; ?>
+
+
 
 
 
@@ -115,7 +134,7 @@
 												<i class="pe-7s-search"></i>
 											</a>
 										</li>
-										<li class="dropdown">
+										<!-- <li class="dropdown">
 											<button class="btn btn-link dropdown-toggle ht-btn" type="button" id="languageButton" data-bs-toggle="dropdown" aria-expanded="false">
 												English
 											</button>
@@ -136,12 +155,12 @@
 												<i class="pe-7s-shopbag"></i>
 												<span class="quantity">3</span>
 											</a>
-										</li>
+										</li>-->
 										<li class="mobile-menu_wrap d-block d-lg-none">
 											<a href="#mobileMenu" class="mobile-menu_btn toolbar-btn pl-0">
 												<i class="pe-7s-menu"></i>
 											</a>
-										</li>
+										</li> 
 									</ul>
 								</div>
 							</div>
@@ -300,9 +319,11 @@
 						<div class="row align-items-center">
 							<div class="col-lg-3 col-6">
 
-								<a href="index.html" class="header-logo">
-									<img src="assets/images/logo/dark.png" alt="Header Logo">
-								</a>
+							<?php if ($logo): ?>
+									<a href="<?php echo esc_url(home_url('/')); ?>" class="header-logo">
+										<img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr(get_bloginfo('name')); ?>">
+									</a>
+								<?php endif; ?>
 
 							</div>
 							<div class="col-lg-6 d-none d-lg-block">
@@ -437,7 +458,8 @@
 												<i class="pe-7s-search"></i>
 											</a>
 										</li>
-										<li class="dropdown d-none d-lg-block">
+
+										<!-- <li class="dropdown d-none d-lg-block">
 											<button class="btn btn-link dropdown-toggle ht-btn p-0" type="button" id="stickysettingButton" data-bs-toggle="dropdown" aria-label="setting" aria-expanded="false">
 												<i class="pe-7s-users"></i>
 											</button>
@@ -457,12 +479,15 @@
 												<i class="pe-7s-shopbag"></i>
 												<span class="quantity">3</span>
 											</a>
-										</li>
+										</li> -->
+
 										<li class="mobile-menu_wrap d-block d-lg-none">
 											<a href="#mobileMenu" class="mobile-menu_btn toolbar-btn pl-0">
 												<i class="pe-7s-menu"></i>
 											</a>
-										</li>
+										</li> 
+
+
 									</ul>
 								</div>
 							</div>
@@ -478,9 +503,11 @@
 						</div>
 						<div class="header-contact offcanvas-contact">
 							<i class="pe-7s-call"></i>
-							<a href="tel://+00-123-456-789">+00 123 456 789</a>
+							<a href="tel:<?php echo esc_attr($phone); ?>"><?php echo esc_html($phone); ?></a>
 						</div>
-						<div class="offcanvas-user-info">
+
+
+						<!-- <div class="offcanvas-user-info">
 							<ul class="dropdown-wrap">
 								<li class="dropdown dropdown-left">
 									<button class="btn btn-link dropdown-toggle ht-btn" type="button" id="languageButtonTwo" data-bs-toggle="dropdown" aria-expanded="false">
@@ -516,7 +543,10 @@
 									</a>
 								</li>
 							</ul>
-						</div>
+						</div> -->
+
+
+
 						<div class="offcanvas-menu_area">
 							<nav class="offcanvas-navigation">
 								<ul class="mobile-menu">
