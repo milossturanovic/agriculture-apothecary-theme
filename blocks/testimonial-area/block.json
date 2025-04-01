@@ -1,0 +1,21 @@
+{
+    "name": "acf/testimonial-area",
+    "title": "Testimonial Area",
+    "description": "A custom testimonial area block that uses ACF fields.",
+    "category": "formatting",
+    "icon": "cover-image",
+    "keywords": ["testimonial", "area", "custom"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "testimonial-area.php"
+    },
+    "supports": {
+        "align": true,
+        "anchor": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview"
+        }
+    }
+}
