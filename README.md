@@ -1,17 +1,16 @@
-# 📘 Project Beta – Custom WordPress Theme (ACF Blocks & Asset Setup)
+# 📘 Agriculture Project theme – Custom WordPress Theme (ACF Blocks & Asset Setup)
 
-This document explains how ACF blocks and assets are set up in the **Project Beta** theme, including automatic block registration, asset loading, and Gutenberg editor styling.
-
+This document explains how ACF blocks and assets are set up in the **Project Beta** theme for the Agriculture apothecary website, including automatic block registration, asset loading, and Gutenberg editor styling.
+ 
 ---
 
 ### 📁 Block Folder Structure
 
 Each custom ACF block must follow this structure inside `/blocks/{block-name}/`:
 
-
 - `block.json` defines block metadata and ACF-specific options
-- `hero.php` is the template rendered on the frontend
-- `hero.css` and `hero.js` are automatically enqueued if present
+- `my-block.php` is the template rendered on the frontend
+- `my-block.css` and `my-block.js` are automatically enqueued if present
 
 ---
 
@@ -22,6 +21,7 @@ ACF blocks are dynamically registered from the `/blocks/` folder using `acf_regi
 **Function (in `functions.php`):**
 ```php
 add_action('acf/init', 'project_beta_register_acf_blocks');
+```
 
 ---
 
@@ -45,23 +45,65 @@ The block editor (Gutenberg) is styled using the following function:
 ```php
 function project_beta_enqueue_editor_assets() {
     wp_enqueue_style('project-beta-editor-fonts', get_template_directory_uri() . '/assets/css/fonts.css', array(), null, 'all');
-    add_editor_style('assets/css/theme.css');
+    add_editor_style('assets/css/style.css');
 }
 add_action('enqueue_block_editor_assets', 'project_beta_enqueue_editor_assets');
-
----
-
-### ✅ 3. **Font Integration Notes**
-Add a quick reminder for how fonts are handled:
-
 ```
+
 ---
 
 ## ✍️ Font Setup
 
 - Fonts are defined in `/assets/css/fonts.css`
-- Font files are located in `/assets/fonts/Urbanist/`
+- Font files are located in `/assets/fonts/`
 - These fonts are loaded both on the frontend and inside Gutenberg
+
+---
+
+## 🎨 Assets Folder Structure
+
+Theme assets are located inside `/assets/` and follow this structure:
+
+```
+assets/
+│
+├── css/                   → All CSS styles including bootstrap, animations, icons, etc.
+│   ├── bootstrap.min.css
+│   ├── font-awesome.min.css
+│   ├── Pe-icon-7-stroke.css
+│   ├── animate.min.css
+│   ├── swiper-bundle.min.css
+│   ├── nice-select.css
+│   ├── magnific-popup.min.css
+│   ├── ion.rangeSlider.min.css
+│   └── style.css          → Main theme stylesheet
+│
+├── js/                    → Theme JS files and vendor plugins
+│   ├── vendor/
+│   │   ├── bootstrap.bundle.min.js
+│   │   ├── jquery-3.6.0.min.js (not used, WP loads jQuery)
+│   │   ├── jquery-migrate-3.3.2.min.js
+│   │   ├── jquery.waypoints.js
+│   │   └── modernizr-3.11.2.min.js
+│   ├── plugins/
+│   │   ├── wow.min.js
+│   │   ├── swiper-bundle.min.js
+│   │   ├── jquery.nice-select.js
+│   │   ├── parallax.min.js
+│   │   ├── jquery.magnific-popup.min.js
+│   │   ├── tippy.min.js
+│   │   ├── ion.rangeSlider.min.js
+│   │   ├── mailchimp-ajax.js
+│   │   └── jquery.counterup.js
+│   └── main.js            → Main theme functionality
+│
+├── fonts/                 → Icon fonts like FontAwesome and Pe Icon 7 Stroke
+│   ├── fontawesome-webfont.woff2
+│   ├── Pe-icon-7-stroke.ttf
+│   └── ...
+│
+└── images/                → All static images used in the theme
+```
 
 ---
 
