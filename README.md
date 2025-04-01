@@ -1,7 +1,7 @@
-# 📘 Agriculture Project theme – Custom WordPress Theme (ACF Blocks & Asset Setup)
+# 📘 Agriculture Apothercary theme – Custom WordPress Theme (ACF Blocks & Asset Setup)
 
 This document explains how ACF blocks and assets are set up in the **Project Beta** theme for the Agriculture apothecary website, including automatic block registration, asset loading, and Gutenberg editor styling.
- 
+
 ---
 
 ### 📁 Block Folder Structure
@@ -25,7 +25,7 @@ add_action('acf/init', 'project_beta_register_acf_blocks');
 
 ---
 
-## 🧩 How to Add a New Block
+## 🧹 How to Add a New Block
 
 1. Create a new folder inside `/blocks/`, e.g. `/blocks/my-block/`
 2. Add the following files:
@@ -44,8 +44,20 @@ The block editor (Gutenberg) is styled using the following function:
 
 ```php
 function project_beta_enqueue_editor_assets() {
-    wp_enqueue_style('project-beta-editor-fonts', get_template_directory_uri() . '/assets/css/fonts.css', array(), null, 'all');
-    add_editor_style('assets/css/style.css');
+	wp_enqueue_style('project-beta-editor-bootstrap', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), filemtime(get_template_directory() . '/assets/css/bootstrap.min.css'));
+	wp_enqueue_style('project-beta-editor-swiper-css', get_template_directory_uri() . '/assets/css/swiper-bundle.min.css', array(), filemtime(get_template_directory() . '/assets/css/swiper-bundle.min.css'));
+	wp_enqueue_script('project-beta-editor-swiper-js', get_template_directory_uri() . '/assets/js/plugins/swiper-bundle.min.js', array(), filemtime(get_template_directory() . '/assets/js/plugins/swiper-bundle.min.js'), true);
+
+	// Fonts and Icons
+	wp_enqueue_style('project-beta-editor-fonts', get_template_directory_uri() . '/assets/css/fonts.css', array(), filemtime(get_template_directory() . '/assets/css/fonts.css'));
+	wp_enqueue_style('main-style', get_template_directory_uri() . '/assets/css/fonts.css', array(), filemtime(get_template_directory() . '/assets/css/fonts.css')); // Note: same file as above
+	wp_enqueue_style('pe-icons', get_template_directory_uri() . '/assets/css/Pe-icon-7-stroke.css', array(), null);
+
+	// Editor inline styles
+	add_editor_style('assets/css/fonts.css');
+	add_editor_style('assets/css/bootstrap.min.css');
+	add_editor_style('assets/css/Pe-icon-7-stroke.css');
+    add_editor_style('assets/css/gutenberg-editor-style.css');
 }
 add_action('enqueue_block_editor_assets', 'project_beta_enqueue_editor_assets');
 ```
@@ -113,3 +125,4 @@ Each block's CSS and JS are only loaded on pages where that block appears.
 This is handled via dynamic block registration and conditional asset enqueueing with `acf_register_block_type()`.
 
 This helps keep frontend performance optimal.
+
