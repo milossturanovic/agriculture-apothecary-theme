@@ -112,33 +112,6 @@
         }
     );
 
-    /* ---Main Slider Two--- */
-    if ($('.main-slider-2').elExists()) {
-        var swiper = new Swiper('.main-slider-2', {
-            loop: true,
-            slidesPerView: 1,
-            speed: 750,
-            autoplay: {
-                delay: 4000,
-            },
-            effect: 'fade',
-            fadeEffect: {
-                crossFade: true,
-            },
-            navigation: {
-                nextEl: '.slide-button-next',
-                prevEl: '.slide-button-prev',
-            },
-        });
-    }
-    $('.main-slider-2').hover(
-        function () {
-            this.swiper.autoplay.stop();
-        },
-        function () {
-            this.swiper.autoplay.start();
-        }
-    );
 
     /* --- Product Slider--- */
     if ($('.product-slider').elExists()) {
