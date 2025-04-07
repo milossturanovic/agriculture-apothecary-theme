@@ -211,8 +211,32 @@ if (defined('JETPACK__VERSION')) {
 
 
 
+
+/* 
+    INDEX
+
+    1. styles and scripts loading
+    2. Enqueue styles for the Gutenberg editor.
+    3. Dynamically registers ACF blocks
+    4. register header menu
+    5. Enable editor styles 
+    6. Allow SVG
+    7. Enable excerpts for pages
+    8. additonal theme options
+    9. enable exceprts for default posts
+    10. enables video formats
+    11. Enable support for WooCommerce plugin in your custom theme
+    12. Register a custom sidebar for the shop page
+    13. Register custom image sizes
+
+*/
+
+
+
+
 /**
- * Enqueues all frontend styles and scripts for the Project Beta theme (based on Pronia).
+ * 1. styles and scripts loading
+ * Enqueues all frontend styles and scripts for the Project Beta theme .
  *
  * Loads required CSS and JS files directly from the theme's assets directory.
  */
@@ -255,7 +279,7 @@ add_action('wp_enqueue_scripts', 'project_beta_enqueue_assets');
 
 
 /**
- * Enqueue styles for the Gutenberg editor.
+ *  2. Enqueue styles for the Gutenberg editor.
  *
  * This function ensures that the block editor (Gutenberg) matches the frontend styles.
  * 
@@ -293,7 +317,7 @@ add_action('enqueue_block_editor_assets', 'project_beta_enqueue_editor_assets');
 
 
 /**
- * Dynamically registers ACF blocks from the `/blocks/` directory.
+ * 3. Dynamically registers ACF blocks from the `/blocks/` directory.
  *
  * This function scans the `/blocks/` folder for any subdirectories that contain a `block.json` file.
  * If a valid `block.json` file is found, it reads the configuration and registers the block dynamically.
@@ -358,7 +382,7 @@ add_action('acf/init', 'project_beta_register_acf_blocks');
 
 
 
-// register header menu
+// 4. register header menu
 function register_main_menu()
 {
     register_nav_menus(array(
@@ -369,6 +393,7 @@ add_action('after_setup_theme', 'register_main_menu');
 
 
 
+// 5. Enable editor styles
 
 function mytheme_add_editor_styles()
 {
@@ -382,7 +407,7 @@ add_action('after_setup_theme', 'mytheme_add_editor_styles');
 
 /* 
 
-Allow SVG
+6. Allow SVG
 
 */
 
@@ -426,7 +451,7 @@ add_action('admin_head', 'fix_svg');
 
 /* 
 
-Enable excerpts for pages
+7. Enable excerpts for pages
 
 */
 
@@ -440,7 +465,7 @@ add_action('init', 'enable_page_excerpts');
 
 
 /* 
-additonal theme options
+8. additonal theme options
 
 */
 
@@ -462,7 +487,7 @@ if (function_exists('acf_add_options_page')) {
 
 /* 
 
-enable exceprts for default posts
+9. enable exceprts for default posts
 
 */
 
@@ -481,7 +506,7 @@ add_action('init', 'enable_excerpt_for_posts');
 
 /* 
 
-enables video formats
+10. enables video formats
 
 */
 
@@ -504,7 +529,7 @@ add_filter('upload_mimes', 'enable_custom_upload_mime_types');
 
 /* 
 
-Enable support for WooCommerce plugin in your custom theme
+11. Enable support for WooCommerce plugin in your custom theme
 
 */
 
@@ -519,7 +544,7 @@ add_action('after_setup_theme', 'Project_Beta_add_woocommerce_support');
 
 /* 
 
-Register a custom sidebar for the shop page
+12. Register a custom sidebar for the shop page
 
 */
 
@@ -536,3 +561,22 @@ function Project_Beta_register_sidebar()
     ));
 }
 add_action('widgets_init', 'Project_Beta_register_sidebar');
+
+
+
+/* 
+
+13. Register custom image sizes
+
+
+*/
+
+
+// product main gallery size
+add_image_size('product_gallery_auto', 9999, 600, false);
+
+
+// Register custom image size for similar products
+add_action('after_setup_theme', function () {
+    add_image_size('similar_product', 270, 300, true);
+});

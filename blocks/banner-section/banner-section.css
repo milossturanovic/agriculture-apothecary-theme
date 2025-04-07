@@ -8,6 +8,14 @@
   .banner-img img {
     width: 100%;
   }
+
+
+  .banner-content .title {
+    color: white !important;
+    font-size: 27px !important;
+  }
+
+
   @media (max-width: 479px) {
     .banner-img {
       height: 250px;
@@ -335,3 +343,43 @@
   .banner-bg-image .inner-content .discount span {
     color: #55843c;
   }
+
+
+
+  /* Overwrites*/
+
+
+  .img-cover-banner img{
+    height: 500px;
+    width: auto;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  
+
+
+
+  .banner-overlay-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .banner-overlay-wrapper .banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25); /* Adjust opacity as needed */
+    z-index: 1;
+  }
+  
+  .banner-overlay-wrapper img {
+    position: relative;
+    z-index: 0;
+  }
+  
+  /* Ensure the text appears above the overlay */
+  .banner-content {
+    z-index: 2;
+    position: absolute;
+  }
+  

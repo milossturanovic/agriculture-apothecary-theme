@@ -1,22 +1,32 @@
 /* Theme overwrties */
 
-
-.header-logo img{
-    height: 100px !important;
-    width: auto;
-    margin-right: 120px;
+.header-logo img {
+  height: 100px !important;
+  width: auto;
+  margin-right: 120px;
 }
 
-
-
-
-
 @media (max-width: 768px) {
-   
-.header-logo img{
+  .header-logo img {
     height: 60px !important;
     width: auto;
     margin-right: 0px;
-}
   }
-  
+}
+
+
+
+
+/* single product proizvodi post */
+
+.product-img img {
+  width: 270px !important;
+  height: 300px !important;
+  object-fit: cover !important;
+}
+
+
+
+.product-tab-area .product-tab-content ul{
+    list-style: circle !important;
+}
