@@ -110,7 +110,7 @@
             </div>
             <div class="col-lg-6 pt-5 pt-lg-0">
                 <div class="single-product-content">
-                    <h2 class="title"><?php echo get_the_title($post_id) ?></h2>
+                    <h1 class="title"><?php echo get_the_title($post_id) ?></h1>
                  
 
                   

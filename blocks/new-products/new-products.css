@@ -184,3 +184,13 @@
     font-weight: 300;
     line-height: 30px;
   }
+
+
+
+  /* overwrites */
+
+
+
+  .product-item:hover .product-img img.secondary-img {
+    opacity: 0 !important;
+  }

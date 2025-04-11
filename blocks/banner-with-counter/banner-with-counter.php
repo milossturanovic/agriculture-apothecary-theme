@@ -104,10 +104,7 @@ if (!empty($is_preview)) {
     return;
 }
 
-// Get ACF fields
-$heading = get_field('hero_heading') ?: 'Default Heading';
-$subheading = get_field('hero_subheading') ?: 'Default Subheading';
-$background = get_field('hero_background') ?: get_template_directory_uri() . "/assets/images/hero-slider/hero-slider-07.jpg";
+;
 ?>
 
 
@@ -118,7 +115,15 @@ $background = get_field('hero_background') ?: get_template_directory_uri() . "/a
 </div>
 <!-- Product Area End Here -->
 
-<!-- Begin Banner Area -->
+
+
+<?php
+$data = get_field('banner_with_counter');
+$title = $data['title'];
+$counter_items = $data['counter_items'];
+
+?>
+
 <div class="banner-with-counter">
     <div class="banner-area">
         <div class="container">
@@ -142,50 +147,30 @@ $background = get_field('hero_background') ?: get_template_directory_uri() . "/a
             </div>
         </div>
     </div>
+
     <div class="counter-area">
         <div class="container">
-            <h2 class="counter-title">Lorem ipsum dolor sit amet, consectetur adipisicing <br> elit, sed do
-                <span>eiusmod tempor</span> incididunt.
-            </h2>
-            <div class="row">
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="counter-item">
-                        <div class="count-wrap">
-                            <h3 class="count mb-0" data-counterup-time="500">150</h3>
-                            <span class="prefix">+</span>
+            <?php if ($title): ?>
+                <h2 class="counter-title"><?php echo nl2br(esc_html($title)); ?></h2>
+            <?php endif; ?>
+
+            <?php if ($counter_items): ?>
+                <div class="row">
+                    <?php foreach ($counter_items as $item): ?>
+                        <div class="col-lg-3 col-md-4 col-6<?php echo ($loop_index ?? 0) > 1 ? ' pt-4 pt-md-0' : ''; ?>">
+                            <div class="counter-item">
+                                <div class="count-wrap">
+                                    <h3 class="count mb-0" data-counterup-time="1000"><?php echo esc_html($item['count_number']); ?></h3>
+                                    <span class="prefix">+</span>
+                                </div>
+                                <h4 class="count-title mb-0"><?php echo esc_html($item['count_title']); ?></h4>
+                            </div>
                         </div>
-                        <h4 class="count-title mb-0">Projects</h4>
-                    </div>
+                        <?php $loop_index = ($loop_index ?? 0) + 1; ?>
+                    <?php endforeach; ?>
                 </div>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <div class="counter-item">
-                        <div class="count-wrap">
-                            <h3 class="count mb-0" data-counterup-time="1000">359</h3>
-                            <span class="prefix">+</span>
-                        </div>
-                        <h4 class="count-title mb-0">Clients</h4>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6 pt-4 pt-md-0">
-                    <div class="counter-item">
-                        <div class="count-wrap">
-                            <h3 class="count mb-0" data-counterup-time="1500">251</h3>
-                            <span class="prefix">+</span>
-                        </div>
-                        <h4 class="count-title mb-0">Rating</h4>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-6 pt-4 pt-lg-0">
-                    <div class="counter-item">
-                        <div class="count-wrap">
-                            <h3 class="count mb-0" data-counterup-time="2000">110</h3>
-                            <span class="prefix">+</span>
-                        </div>
-                        <h4 class="count-title mb-0">Award</h4>
-                    </div>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
-<!-- Banner Area End Here -->
+

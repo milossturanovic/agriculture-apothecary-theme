@@ -184,3 +184,34 @@
     font-weight: 300;
     line-height: 30px;
   }
+  
+
+
+
+
+  /* overwrites */
+
+
+  /* single product proizvodi post */
+
+.product-item-wrap   .product-img img {
+  width: 270px !important;
+  height: 300px !important;
+  object-fit: cover !important;
+}
+
+
+
+  @media screen and (max-width: 767px) {
+    .product-item-wrap .product-item{
+      text-align: center;
+    }
+
+
+    .product-item-wrap .product-item:hover{
+      text-align: center;
+    }
+    
+  }
+
+

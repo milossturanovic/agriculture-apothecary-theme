@@ -228,6 +228,7 @@ if (defined('JETPACK__VERSION')) {
     11. Enable support for WooCommerce plugin in your custom theme
     12. Register a custom sidebar for the shop page
     13. Register custom image sizes
+    14. Additional menu register
 
 */
 
@@ -580,3 +581,21 @@ add_image_size('product_gallery_auto', 9999, 600, false);
 add_action('after_setup_theme', function () {
     add_image_size('similar_product', 270, 300, true);
 });
+
+
+/* 
+
+14. Additional menu register
+
+*/
+
+
+
+// 5. register footer menus
+function register_footer_menus() {
+    register_nav_menus(array(
+        'footer_1' => __('Footer 1', 'project-beta'),
+        'footer_2' => __('Footer 2', 'project-beta'),
+    ));
+}
+add_action('after_setup_theme', 'register_footer_menus');
