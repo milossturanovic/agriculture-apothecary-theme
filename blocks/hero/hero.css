@@ -320,4 +320,19 @@
 }
 
 
+/* overwrites */
 
+
+  .slide-img img {
+
+    height: 70vh;
+
+  }
+
+
+
+  @media (max-width: 767px) {
+    .slide-img img {
+      height: 35vh !important;
+    }
+  }

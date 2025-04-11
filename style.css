@@ -19,7 +19,7 @@
 
 /* single product proizvodi post */
 
-.product-img img {
+.product-area .product-img img {
   width: 270px !important;
   height: 300px !important;
   object-fit: cover !important;
@@ -29,4 +29,15 @@
 
 .product-tab-area .product-tab-content ul{
     list-style: circle !important;
+}
+
+
+
+/* footer */
+
+
+
+.footer-contact-info .address ul li {
+  
+  margin-bottom: 10px !important;
 }

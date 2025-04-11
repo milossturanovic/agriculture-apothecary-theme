@@ -1,0 +1,21 @@
+{
+    "name": "acf/about-us",
+    "title": "About Us Section",
+    "description": "A custom about us section block that uses ACF fields.",
+    "category": "formatting",
+    "icon": "cover-image",
+    "keywords": ["about", "us", "section"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "about-us.php"
+    },
+    "supports": {
+        "align": true,
+        "anchor": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview"
+        }
+    }
+}

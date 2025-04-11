@@ -95,3 +95,18 @@
     font-style: italic;
     line-height: 32px;
   }
+
+
+
+
+
+
+  /* overwrties */
+
+
+
+
+  .testimonial-area .container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
