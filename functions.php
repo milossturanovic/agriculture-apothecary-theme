@@ -256,7 +256,7 @@ function project_beta_enqueue_assets()
     wp_enqueue_style('main-style', get_template_directory_uri() . '/assets/css/style.css', array(), null, 'all');
 
     // --- JS ---
-    wp_enqueue_script('jquery'); // WP bundled jQuery (don’t load your own)
+    wp_enqueue_script('jquery'); // WP bundled jQuery (don't load your own)
 
     wp_enqueue_script('bootstrap', get_template_directory_uri() . '/assets/js/vendor/bootstrap.bundle.min.js', array('jquery'), null, true);
     wp_enqueue_script('jquery-migrate', get_template_directory_uri() . '/assets/js/vendor/jquery-migrate-3.3.2.min.js', array('jquery'), null, true);
@@ -272,6 +272,17 @@ function project_beta_enqueue_assets()
     wp_enqueue_script('ion-range-slider', get_template_directory_uri() . '/assets/js/plugins/ion.rangeSlider.min.js', array(), null, true);
     wp_enqueue_script('mailchimp', get_template_directory_uri() . '/assets/js/plugins/mailchimp-ajax.js', array('jquery'), null, true);
     wp_enqueue_script('counterup', get_template_directory_uri() . '/assets/js/plugins/jquery.counterup.js', array('jquery'), null, true);
+
+    // Ajax pagination script
+    wp_enqueue_script('ajax-pagination', get_template_directory_uri() . '/assets/js/ajax-pagination.js', array('jquery'), null, true);
+    wp_localize_script(
+        'ajax-pagination',
+        'ajax_pagination_params',
+        array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('ajax_pagination_nonce')
+        )
+    );
 
     wp_enqueue_script('main', get_template_directory_uri() . '/assets/js/main.js', array('jquery'), null, true);
 }
@@ -289,20 +300,21 @@ add_action('wp_enqueue_scripts', 'project_beta_enqueue_assets');
  * - Applies `gutenberg-editor-style.css` using `add_editor_style()`, ensuring Gutenberg reflects the theme design.
  * - This function runs inside `enqueue_block_editor_assets` to affect only the editor and not the frontend.
  */
-function project_beta_enqueue_editor_assets() {
-	wp_enqueue_style('project-beta-editor-bootstrap', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), filemtime(get_template_directory() . '/assets/css/bootstrap.min.css'));
-	wp_enqueue_style('project-beta-editor-swiper-css', get_template_directory_uri() . '/assets/css/swiper-bundle.min.css', array(), filemtime(get_template_directory() . '/assets/css/swiper-bundle.min.css'));
-	wp_enqueue_script('project-beta-editor-swiper-js', get_template_directory_uri() . '/assets/js/plugins/swiper-bundle.min.js', array(), filemtime(get_template_directory() . '/assets/js/plugins/swiper-bundle.min.js'), true);
+function project_beta_enqueue_editor_assets()
+{
+    wp_enqueue_style('project-beta-editor-bootstrap', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), filemtime(get_template_directory() . '/assets/css/bootstrap.min.css'));
+    wp_enqueue_style('project-beta-editor-swiper-css', get_template_directory_uri() . '/assets/css/swiper-bundle.min.css', array(), filemtime(get_template_directory() . '/assets/css/swiper-bundle.min.css'));
+    wp_enqueue_script('project-beta-editor-swiper-js', get_template_directory_uri() . '/assets/js/plugins/swiper-bundle.min.js', array(), filemtime(get_template_directory() . '/assets/js/plugins/swiper-bundle.min.js'), true);
 
-	// Fonts and Icons
-	wp_enqueue_style('project-beta-editor-fonts', get_template_directory_uri() . '/assets/css/fonts.css', array(), filemtime(get_template_directory() . '/assets/css/fonts.css'));
-	wp_enqueue_style('main-style', get_template_directory_uri() . '/assets/css/fonts.css', array(), filemtime(get_template_directory() . '/assets/css/fonts.css')); // Note: same file as above
-	wp_enqueue_style('pe-icons', get_template_directory_uri() . '/assets/css/Pe-icon-7-stroke.css', array(), null);
+    // Fonts and Icons
+    wp_enqueue_style('project-beta-editor-fonts', get_template_directory_uri() . '/assets/css/fonts.css', array(), filemtime(get_template_directory() . '/assets/css/fonts.css'));
+    wp_enqueue_style('main-style', get_template_directory_uri() . '/assets/css/fonts.css', array(), filemtime(get_template_directory() . '/assets/css/fonts.css')); // Note: same file as above
+    wp_enqueue_style('pe-icons', get_template_directory_uri() . '/assets/css/Pe-icon-7-stroke.css', array(), null);
 
-	// Editor inline styles
-	add_editor_style('assets/css/fonts.css');
-	add_editor_style('assets/css/bootstrap.min.css');
-	add_editor_style('assets/css/Pe-icon-7-stroke.css');
+    // Editor inline styles
+    add_editor_style('assets/css/fonts.css');
+    add_editor_style('assets/css/bootstrap.min.css');
+    add_editor_style('assets/css/Pe-icon-7-stroke.css');
     add_editor_style('assets/css/gutenberg-editor-style.css');
 }
 add_action('enqueue_block_editor_assets', 'project_beta_enqueue_editor_assets');
@@ -579,7 +591,7 @@ add_image_size('product_gallery_auto', 9999, 600, false);
 
 // Register custom image size for similar products
 add_action('after_setup_theme', function () {
-    add_image_size('similar_product', 270, 300, true);
+    add_image_size('similar_product', 540, 600, true);
 });
 
 
@@ -592,10 +604,205 @@ add_action('after_setup_theme', function () {
 
 
 // 5. register footer menus
-function register_footer_menus() {
+function register_footer_menus()
+{
     register_nav_menus(array(
         'footer_1' => __('Footer 1', 'project-beta'),
         'footer_2' => __('Footer 2', 'project-beta'),
     ));
 }
 add_action('after_setup_theme', 'register_footer_menus');
+
+
+
+
+
+
+/**
+ * Register Ajax handlers for product pagination
+ */
+
+
+// Register AJAX handlers
+add_action('init', function () {
+    add_action('wp_ajax_ajax_load_products', 'ajax_load_products_handler');
+    add_action('wp_ajax_nopriv_ajax_load_products', 'ajax_load_products_handler');
+});
+
+function ajax_load_products_handler()
+{
+    check_ajax_referer('ajax_pagination_nonce', 'nonce');
+
+    $paged = isset($_POST['page']) ? absint($_POST['page']) : 1;
+    $sort = sanitize_text_field($_POST['sort'] ?? 'default');
+    $category = sanitize_text_field($_POST['category'] ?? '');
+    $tag = sanitize_text_field($_POST['tag'] ?? '');
+    $search = sanitize_text_field($_POST['search'] ?? '');
+
+    $products_html = get_products_grid_html($paged, $sort, $category, $tag, $search);
+
+    $args = [
+        'post_type' => 'proizvodi',
+        'posts_per_page' => 12,
+        'paged' => $paged,
+        'orderby' => 'date',
+        'order' => 'DESC',
+        'tax_query' => []
+    ];
+
+    if (!empty($search)) {
+        $args['s'] = $search;
+    }
+
+    if ($sort === 'title') {
+        $args['orderby'] = 'title';
+        $args['order'] = 'ASC';
+    }
+
+    if ($category) {
+        $args['tax_query'][] = [
+            'taxonomy' => 'category',
+            'field' => 'slug',
+            'terms' => $category
+        ];
+    }
+
+    if ($tag) {
+        $args['tax_query'][] = [
+            'taxonomy' => 'post_tag',
+            'field' => 'slug',
+            'terms' => $tag
+        ];
+    }
+
+    if (count($args['tax_query']) > 1) {
+        $args['tax_query']['relation'] = 'AND';
+    }
+
+    $query = new WP_Query($args);
+
+    $links = paginate_links([
+        'total' => $query->max_num_pages,
+        'current' => $paged,
+        'prev_text' => '&laquo;',
+        'next_text' => '&raquo;',
+        'type' => 'array',
+        'format' => '#'
+    ]);
+
+    $pagination_html = '';
+    if (!empty($links)) {
+        foreach ($links as $link) {
+            if (strpos($link, 'current') !== false) {
+                // Active/current page (no link)
+                $pagination_html .= '<li class="page-item active"><span class="page-link">' . strip_tags($link) . '</span></li>';
+            } else {
+                // Extract number using regex fallback
+                if (preg_match('/>(\d+)</', $link, $match)) {
+                    $page_number = $match[1];
+                    $pagination_html .= '<li class="page-item">' . str_replace(
+                        '<a ',
+                        '<a class="page-link" href="#" data-page="' . esc_attr($page_number) . '" ',
+                        $link
+                    ) . '</li>';
+                } else {
+                    $pagination_html .= '<li class="page-item">' . $link . '</li>';
+                }
+            }
+        }
+    }
+
+
+    $total = new WP_Query([
+        'post_type' => 'proizvodi',
+        'posts_per_page' => -1,
+        'tax_query' => $args['tax_query']
+    ]);
+
+    $found = $total->found_posts;
+    $per_page = 12;
+    $from = (($paged - 1) * $per_page) + 1;
+    $to = min($found, $paged * $per_page);
+    $count_info = '<span>' . $from . '-' . $to . '</span> proizvoda od <span>' . $found . '</span>';
+
+    wp_send_json_success([
+        'products' => $products_html,
+        'pagination' => $pagination_html,
+        'count_info' => $count_info
+    ]);
+}
+
+// Product grid HTML output
+function get_products_grid_html($paged = 1, $sort = 'default', $category = '', $tag = '', $search = '')
+{
+    $orderby = 'date';
+    $order = 'DESC';
+
+    if ($sort === 'title') {
+        $orderby = 'title';
+        $order = 'ASC';
+    }
+
+    $args = [
+        'post_type' => 'proizvodi',
+        'posts_per_page' => 12,
+        'paged' => $paged,
+        'orderby' => $orderby,
+        'order' => $order,
+        'tax_query' => []
+    ];
+
+    if (!empty($search)) {
+        $args['s'] = $search;
+    }
+
+    if ($category) {
+        $args['tax_query'][] = [
+            'taxonomy' => 'category',
+            'field' => 'slug',
+            'terms' => $category
+        ];
+    }
+
+    if ($tag) {
+        $args['tax_query'][] = [
+            'taxonomy' => 'post_tag',
+            'field' => 'slug',
+            'terms' => $tag
+        ];
+    }
+
+    if (count($args['tax_query']) > 1) {
+        $args['tax_query']['relation'] = 'AND';
+    }
+
+    $query = new WP_Query($args);
+    $output = '';
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            $output .= '<div class="col-md-4 col-sm-6">';
+            $output .= '<div class="product-item">';
+            $output .= '<div class="product-img">';
+            $output .= '<a href="' . get_permalink() . '">';
+            $output .= '<img class="primary-img" src="' . get_the_post_thumbnail_url(get_the_ID(), 'medium') . '" alt="' . get_the_title() . '">';
+            $second = get_field('secondary_image');
+            if ($second) {
+                $output .= '<img class="secondary-img" src="' . esc_url($second['url']) . '" alt="">';
+            }
+            $output .= '</a>';
+            $output .= '</div>';
+            $output .= '<div class="product-content">';
+            $output .= '<a class="product-name" href="' . get_permalink() . '">' . get_the_title() . '</a>';
+            $output .= '</div>';
+            $output .= '</div>';
+            $output .= '</div>';
+        }
+    } else {
+        $output .= '<p>No products found.</p>';
+    }
+
+    wp_reset_postdata();
+    return $output;
+}
