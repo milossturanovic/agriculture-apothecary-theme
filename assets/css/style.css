@@ -3457,7 +3457,11 @@ blockquote p {
   position: relative;
 }
 .product-img img {
-  width: 100%;
+  /* width: 100%; */
+
+  width: 270px !important;
+  height: 300px !important;
+  object-fit: contain !important;
 }
 .product-img img.secondary-img {
   position: absolute;
@@ -5103,7 +5107,7 @@ blockquote p {
 /*  21. Breadcrumb
 /*----------------------------------------*/
 .breadcrumb-height {
-  height: 370px;
+  height: 150px;
 }
 .breadcrumb-heading {
   text-transform: uppercase;
