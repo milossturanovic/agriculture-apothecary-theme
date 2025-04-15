@@ -15,7 +15,7 @@ get_header();
             <div class="row h-100">
                 <div class="col-lg-12">
                     <div class="breadcrumb-item">
-                        <h2 class="breadcrumb-heading"><?php the_title(); ?></h2>
+                        <h1 class="breadcrumb-heading"><?php the_title(); ?></h1>
                         <ul>
                             <li>
                                 <a href="/">Početna</a>
@@ -51,9 +51,11 @@ get_header();
 
 
                                 <ul class="widgets-category">
-                                    <li><a href="#" class="filter-category" data-category="">All</a></li>
+                                    <li><a href="#" class="filter-category" data-category="">Svi proizvodi</a></li>
                                     <?php
-                                    $categories = get_categories();
+                                    $categories = get_categories(array(
+                                        'exclude' => array(1) // Exclude uncategorized (ID 1)
+                                    ));
                                     foreach ($categories as $cat) {
                                         echo '<li>
                                                 <a href="#" class="filter-category" data-category="' . esc_attr($cat->slug) . '">
@@ -124,25 +126,12 @@ get_header();
                                 <span><?php echo $from . '-' . $to; ?></span> proizvoda od <span><?php echo $found; ?></span>
                             </li>
 
-                            <li class="product-view-wrap">
-                                <ul class="nav" role="tablist">
-                                    <li class="grid-view" role="presentation">
-                                        <a class="active" id="grid-view-tab" data-bs-toggle="tab" href="#grid-view" role="tab" aria-selected="true">
-                                            <i class="fa fa-th"></i>
-                                        </a>
-                                    </li>
-                                    <li class="list-view" role="presentation">
-                                        <a id="list-view-tab" data-bs-toggle="tab" href="#list-view" role="tab" aria-selected="false">
-                                            <i class="fa fa-th-list"></i>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                        
                             <li class="short">
                                 <select class="nice-select" id="product-sort">
-                                    <option value="default" <?php selected($_GET['sort'] ?? '', 'default'); ?>>Sort by Default</option>
-                                    <option value="latest" <?php selected($_GET['sort'] ?? '', 'latest'); ?>>Sort by Latest</option>
-                                    <option value="title" <?php selected($_GET['sort'] ?? '', 'title'); ?>>Sort by Name</option>
+                                    <option value="default" <?php selected($_GET['sort'] ?? '', 'default'); ?>>Sortiraj</option>
+                                    <option value="latest" <?php selected($_GET['sort'] ?? '', 'latest'); ?>>Sortiraj po najskorijim</option>
+                                    <option value="title" <?php selected($_GET['sort'] ?? '', 'title'); ?>>Sortiraj po imenu</option>
                                 </select>
                             </li>
                         </ul>

@@ -62,3 +62,15 @@
   
 }
 
+
+
+
+/* o nama page */
+
+.team-area .team-item .team-img img {
+  width: 270px !important;
+  height: 270px !important;
+  object-fit: cover !important;
+}
+
+

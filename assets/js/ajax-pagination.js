@@ -1,7 +1,13 @@
 /**
  * Ajax Pagination for WordPress Products Grid
+ * Only runs on the Proizvodi page template
  */
 jQuery(document).ready(function($) {
+    // Check if we're on the right page by looking for the product grid container
+    if ($('#product-grid-container').length === 0) {
+        return; // Exit early if not on the right page
+    }
+
     // Store current state
     let currentPage = 1;
     let currentSort = $('#product-sort').val() || 'default';
@@ -61,8 +67,14 @@ jQuery(document).ready(function($) {
                     let newUrl = updateUrlParameter(window.location.href, 'paged', page);
                     newUrl = updateUrlParameter(newUrl, 'sort', sort);
                     if (category) newUrl = updateUrlParameter(newUrl, 'category', category);
+                    else newUrl = removeUrlParameter(newUrl, 'category');
+                    
                     if (tag) newUrl = updateUrlParameter(newUrl, 'tag', tag);
+                    else newUrl = removeUrlParameter(newUrl, 'tag');
+                    
                     if (search) newUrl = updateUrlParameter(newUrl, 'search', search);
+                    else newUrl = removeUrlParameter(newUrl, 'search');
+                    
                     window.history.pushState({page: page}, '', newUrl);
                     
                     // Update active states
@@ -154,9 +166,7 @@ jQuery(document).ready(function($) {
     function updateUrlParameter(uri, key, value) {
         // Remove the parameter if value is empty
         if (!value) {
-            return uri.replace(new RegExp('([?&])' + key + '=.*?(&|$)', 'i'), '$1$2')
-                .replace(/^\?&/, '?')
-                .replace(/&$/, '');
+            return removeUrlParameter(uri, key);
         }
         
         var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -167,6 +177,17 @@ jQuery(document).ready(function($) {
         } else {
             return uri + separator + key + "=" + value;
         }
+    }
+    
+    // Helper function to remove URL parameters
+    function removeUrlParameter(uri, key) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        if (uri.match(re)) {
+            return uri.replace(re, function(str, p1, p2) {
+                return p2 ? p1 : '';
+            }).replace(/^\?&/, '?').replace(/[?&]$/, '');
+        }
+        return uri;
     }
     
     // Add loading styles dynamically
@@ -209,7 +230,38 @@ jQuery(document).ready(function($) {
         `)
         .appendTo('head');
 
+    // Initialize: Parse URL parameters to set initial state
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Set initial values from URL if present
+    const urlPage = getUrlParameter('paged');
+    const urlSort = getUrlParameter('sort');
+    const urlCategory = getUrlParameter('category');
+    const urlTag = getUrlParameter('tag');
+    const urlSearch = getUrlParameter('search');
+    
+    if (urlPage) currentPage = parseInt(urlPage);
+    if (urlSort) {
+        currentSort = urlSort;
+        $('#product-sort').val(urlSort);
+    }
+    if (urlCategory) selectedCategory = urlCategory;
+    if (urlTag) selectedTag = urlTag;
+    if (urlSearch) {
+        searchQuery = urlSearch;
+        $('#product-search').val(urlSearch);
+    }
+
     // Initial load
-    loadProducts(1);
     updateActiveFilters();
+    
+    // Only load products via AJAX if we have the container present
+    if ($('#product-grid-container').length > 0) {
+        loadProducts(currentPage, currentSort, selectedCategory, selectedTag, searchQuery);
+    }
 });
