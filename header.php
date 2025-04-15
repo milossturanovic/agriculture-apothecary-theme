@@ -379,7 +379,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="offcanvas-minicart_wrapper" id="miniCart">
+
+
+
+			
+			<!-- <div class="offcanvas-minicart_wrapper" id="miniCart">
 				<div class="offcanvas-body">
 					<div class="minicart-content">
 						<div class="minicart-heading">
@@ -438,7 +442,7 @@
 						<a href="checkout.html" class="btn btn-dark">Checkout</a>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<div class="global-overlay"></div>
 		</header>
 		<!-- Main Header Area End Here -->

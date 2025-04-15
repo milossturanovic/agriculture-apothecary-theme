@@ -1,0 +1,21 @@
+{
+    "name": "acf/brand-area",
+    "title": "Brand Area Section",
+    "description": "A custom brand Area section block that uses ACF fields.",
+    "category": "formatting",
+    "icon": "cover-image",
+    "keywords": ["brand", "area", "section"],
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "brand-area.php"
+    },
+    "supports": {
+        "align": true,
+        "anchor": true
+    },
+    "example": {
+        "attributes": {
+            "mode": "preview"
+        }
+    }
+}

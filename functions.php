@@ -229,7 +229,8 @@ if (defined('JETPACK__VERSION')) {
     12. Register a custom sidebar for the shop page
     13. Register custom image sizes
     14. Additional menu register
-
+    15. Register Ajax handlers for product pagination
+    16. Modify search query to only show posts
 */
 
 
@@ -601,9 +602,6 @@ add_action('after_setup_theme', function () {
 
 */
 
-
-
-// 5. register footer menus
 function register_footer_menus()
 {
     register_nav_menus(array(
@@ -619,7 +617,10 @@ add_action('after_setup_theme', 'register_footer_menus');
 
 
 /**
- * Register Ajax handlers for product pagination
+ * 
+ * 
+ * 15. Register Ajax handlers for product pagination
+
  */
 
 
@@ -681,37 +682,25 @@ function ajax_load_products_handler()
 
     $query = new WP_Query($args);
 
-    $links = paginate_links([
-        'total' => $query->max_num_pages,
-        'current' => $paged,
-        'prev_text' => '&laquo;',
-        'next_text' => '&raquo;',
-        'type' => 'array',
-        'format' => '#'
-    ]);
-
+    // Modified pagination logic
+    $total_pages = $query->max_num_pages;
+    $current_page = $paged;
     $pagination_html = '';
-    if (!empty($links)) {
-        foreach ($links as $link) {
-            if (strpos($link, 'current') !== false) {
-                // Active/current page (no link)
-                $pagination_html .= '<li class="page-item active"><span class="page-link">' . strip_tags($link) . '</span></li>';
+
+    // Calculate the range of pages to show (current page +/- 2)
+    $start_page = max(1, min($current_page - 2, $total_pages - 4));
+    $end_page = min($total_pages, max($current_page + 2, 5));
+
+    // Generate pagination HTML
+    if ($total_pages > 1) {
+        for ($i = $start_page; $i <= $end_page; $i++) {
+            if ($i == $current_page) {
+                $pagination_html .= '<li class="page-item active"><span class="page-link">' . $i . '</span></li>';
             } else {
-                // Extract number using regex fallback
-                if (preg_match('/>(\d+)</', $link, $match)) {
-                    $page_number = $match[1];
-                    $pagination_html .= '<li class="page-item">' . str_replace(
-                        '<a ',
-                        '<a class="page-link" href="#" data-page="' . esc_attr($page_number) . '" ',
-                        $link
-                    ) . '</li>';
-                } else {
-                    $pagination_html .= '<li class="page-item">' . $link . '</li>';
-                }
+                $pagination_html .= '<li class="page-item"><a class="page-link" href="#" data-page="' . $i . '">' . $i . '</a></li>';
             }
         }
     }
-
 
     $total = new WP_Query([
         'post_type' => 'proizvodi',
@@ -800,9 +789,20 @@ function get_products_grid_html($paged = 1, $sort = 'default', $category = '', $
             $output .= '</div>';
         }
     } else {
-        $output .= '<p>No products found.</p>';
+        $output .= '<p>Nismo pronašli proizvode.</p>';
     }
 
     wp_reset_postdata();
     return $output;
 }
+
+/**
+ * 16. Modify search query to only show posts from 'proizvodi' post type
+ */
+function project_beta_search_filter($query) {
+    if (!is_admin() && $query->is_main_query() && $query->is_search()) {
+        $query->set('post_type', array('proizvodi'));
+        $query->set('posts_per_page', 20);
+    }
+}
+add_action('pre_get_posts', 'project_beta_search_filter');

@@ -5007,8 +5007,8 @@ blockquote p {
   opacity: 0;
 }
 .team-img {
-  background-color: #56853e;
-  border-radius: 100%;
+
+  
   position: relative;
 }
 @media (max-width: 991px) {
@@ -5033,8 +5033,7 @@ blockquote p {
   height: 135px;
   text-align: center;
   padding-top: 25px;
-  border-end-end-radius: 125px;
-  border-end-start-radius: 125px;
+ 
   opacity: 0;
   visibility: hidden;
   -webkit-transition: all 0.3s ease 0s;
@@ -5583,6 +5582,17 @@ blockquote p {
   padding: 50px 40px;
   width: calc(100% - 370px);
 }
+
+
+@media (max-width: 767px) {
+  .contact-form {
+    padding: 30px 20px;
+   
+  }
+}
+
+
+
 @media (max-width: 767px) {
   .contact-form {
     width: 100%;
