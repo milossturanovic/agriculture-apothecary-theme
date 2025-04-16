@@ -357,7 +357,7 @@
 
 						<div class="modal-body">
 							<div class="modal-search">
-								<span class="searchbox-info">Start typing and press Enter to search or ESC to close</span>
+								<span class="searchbox-info">Unesite tekst i pritinite Enter ili ESC da zatvorite</span>
 
 								<form role="search" method="get" class="hm-searchbox" action="<?php echo esc_url(home_url('/')); ?>">
 									<input type="search" name="s"

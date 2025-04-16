@@ -29,6 +29,29 @@
     list-style: circle !important;
 }
 
+.product-short-description {
+  margin-top:15px;
+  margin-bottom: 15px;
+}
+
+
+
+.product-short-description ul {
+  list-style: circle !important;
+  margin-left: 18px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* footer */
