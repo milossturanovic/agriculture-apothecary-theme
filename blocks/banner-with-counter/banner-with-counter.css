@@ -180,6 +180,8 @@
   }
   .banner-with-counter .banner-item {
     height: 500px;
+    background-size: cover;
+    background-position: center;
   }
   .banner-with-counter .banner-item .popup-btn {
     display: -webkit-box;

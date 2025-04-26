@@ -115,13 +115,12 @@ if (!empty($is_preview)) {
 </div>
 <!-- Product Area End Here -->
 
-
-
 <?php
 $data = get_field('banner_with_counter');
-$title = $data['title'];
-$counter_items = $data['counter_items'];
-
+$title = $data['title'] ?? '';
+$counter_items = $data['counter_items'] ?? [];
+$video_link = $data['video_link'] ?? '';
+$background_image = $data['background_image'] ?? '';
 ?>
 
 <div class="banner-with-counter">
@@ -129,20 +128,28 @@ $counter_items = $data['counter_items'];
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="banner-boxshadow">
-                        <div class="banner-item" data-bg-image="<?php echo get_template_directory_uri(); ?>/assets/images/banner/3-1-1208x542.jpg">
-                            <div class="popup-btn">
-                                <a class="popup-vimeo wave-btn" href="https://player.vimeo.com/video/172601404?autoplay=1">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <div class="icon">
-                                        <i class="pe-7s-play"></i>
-                                    </div>
-                                </a>
+
+                    <?php if (!empty($video_link)): ?>
+                        <div class="banner-boxshadow">
+                            <div class="banner-item" data-bg-image="<?php 
+                                echo !empty($background_image['url']) 
+                                    ? esc_url($background_image['url']) 
+                                    : get_template_directory_uri() . '/assets/images/banner/3-1-1208x542.jpg'; 
+                            ?>">
+                                <div class="popup-btn">
+                                    <a class="popup-vimeo wave-btn" href="<?php echo esc_url($video_link); ?>">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <div class="icon">
+                                            <i class="pe-7s-play"></i>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
+
                 </div>
             </div>
         </div>
@@ -150,14 +157,14 @@ $counter_items = $data['counter_items'];
 
     <div class="counter-area">
         <div class="container">
-            <?php if ($title): ?>
+            <?php if (!empty($title)): ?>
                 <h2 class="counter-title"><?php echo nl2br(esc_html($title)); ?></h2>
             <?php endif; ?>
 
-            <?php if ($counter_items): ?>
+            <?php if (!empty($counter_items)): ?>
                 <div class="row">
-                    <?php foreach ($counter_items as $item): ?>
-                        <div class="col-lg-3 col-md-4 col-6<?php echo ($loop_index ?? 0) > 1 ? ' pt-4 pt-md-0' : ''; ?>">
+                    <?php foreach ($counter_items as $index => $item): ?>
+                        <div class="col-lg-3 col-md-4 col-6<?php echo $index > 1 ? ' pt-4 pt-md-0' : ''; ?>">
                             <div class="counter-item">
                                 <div class="count-wrap">
                                     <h3 class="count mb-0" data-counterup-time="1000"><?php echo esc_html($item['count_number']); ?></h3>
@@ -166,11 +173,9 @@ $counter_items = $data['counter_items'];
                                 <h4 class="count-title mb-0"><?php echo esc_html($item['count_title']); ?></h4>
                             </div>
                         </div>
-                        <?php $loop_index = ($loop_index ?? 0) + 1; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
     </div>
 </div>
-
