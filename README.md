@@ -126,3 +126,28 @@ This is handled via dynamic block registration and conditional asset enqueueing 
 
 This helps keep frontend performance optimal.
 
+---
+
+## 📥 Import ACF Fields (Important)
+
+In order for the theme and all custom ACF blocks to work properly, you must first import the ACF fields.
+
+An export file is provided in the theme:
+
+**acf-export-2025-04-27.json**
+
+Follow these steps to import:
+
+1. Go to **Custom Fields → Tools** in the WordPress Admin.
+2. Click **Import Field Groups**.
+3. Upload the file:  
+   `/acf-export-2025-04-27.json`
+4. Click **Import**.
+
+This will add all necessary field groups for the custom blocks and theme options.
+
+**Important:**  
+The theme was developed using **Advanced Custom Fields PRO Version 5.12.3**.  
+Make sure you have this version or a newer one installed and activated.
+
+---
