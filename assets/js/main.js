@@ -623,12 +623,13 @@
     if ($('.popup-vimeo').elExists()) {
         $('.popup-vimeo').magnificPopup({
             type: 'iframe',
-            disableOn: function () {
-                if ($(window).width() < 600) {
-                    return false;
-                }
-                return true;
-            },
+            // disableOn: function () {
+            //     if ($(window).width() < 600) {
+            //         return false;
+            //     }
+            //     return true;
+            // },\
+            disableOn: 0, // Force popup everywhere (desktop and mobile)
         });
     }
     if ($('.gallery-popup').elExists()) {

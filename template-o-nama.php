@@ -81,6 +81,8 @@ $description = $data['description'] ?? '';
 $data = get_field('o_nama_banner_with_counter');
 $title = $data['title'] ?? '';
 $counter_items = $data['counter_items'] ?? [];
+$background_image = $data['background_image'] ?? '';
+$video_link = $data['video_link'] ?? '';
 ?>
 
 <div class="banner-with-counter">
@@ -88,20 +90,27 @@ $counter_items = $data['counter_items'] ?? [];
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="banner-boxshadow">
-                        <div class="banner-item" data-bg-image="<?php echo get_template_directory_uri(); ?>/assets/images/banner/3-1-1208x542.jpg">
-                            <div class="popup-btn">
-                                <a class="popup-vimeo wave-btn" href="https://player.vimeo.com/video/172601404?autoplay=1">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <div class="icon">
-                                        <i class="pe-7s-play"></i>
-                                    </div>
-                                </a>
+                    <?php if (!empty($video_link)): ?>
+                        <div class="banner-boxshadow">
+                            <div class="banner-item" 
+                                data-bg-image="<?php 
+                                    echo !empty($background_image['url']) 
+                                        ? esc_url($background_image['url']) 
+                                        : get_template_directory_uri() . '/assets/images/banner/3-1-1208x542.jpg'; 
+                                ?>">
+                                <div class="popup-btn">
+                                    <a class="popup-vimeo wave-btn" href="<?php echo esc_url($video_link); ?>">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <div class="icon">
+                                            <i class="pe-7s-play"></i>
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -131,6 +140,7 @@ $counter_items = $data['counter_items'] ?? [];
         </div>
     </div>
 </div>
+
 
 <!-- Banner Area End Here -->
 

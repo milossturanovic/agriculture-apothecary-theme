@@ -71,10 +71,32 @@ get_header();
 
 					<?php else : ?>
 
-						<div class="no-results-wrapper text-center">
-							<?php get_template_part('template-parts/content', 'none'); ?>
-						</div>
-
+						<header class="page-header text-center mb-30">
+							<h1 class="page-title">
+								<?php
+								/* translators: %s: search query. */
+								printf(esc_html__('Rezultati pretrage za: %s', 'rekos-agency'), '<span class="text-pronia-primary">' . get_search_query() . '</span>');
+								?>
+							</h1>
+							
+							<div class="search-form-wrapper mt-4 mb-4">
+								<form role="search" method="get" class="search-form" action="<?php echo esc_url(home_url('/')); ?>">
+									<div class="input-group" style="max-width: 600px; margin: 0 auto;">
+										<input type="search" 
+											class="form-control" 
+											placeholder="Pretraži proizvode..." 
+											value="<?php echo get_search_query(); ?>" 
+											name="s"
+											style="height: 50px; border-radius: 25px 0 0 25px; padding-left: 20px; border: 1px solid #ddd;">
+										<button type="submit" 
+											class="btn btn-primary" 
+											style="border-radius: 0 25px 25px 0; padding: 0 30px; background-color: #56853e; border-color: #56853e;">
+											<i class="fa fa-search"></i>
+										</button>
+									</div>
+								</form>
+							</div>
+						</header><!-- .page-header -->
 					<?php endif; ?>
 				</div>
 			</div>

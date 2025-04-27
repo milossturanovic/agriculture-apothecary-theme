@@ -92,7 +92,7 @@ get_header();
                         </div>
 
                         <div class="contact-form">
-                            <?php echo do_shortcode('[forminator_form id="1306"]'); ?>
+                            <?php echo do_shortcode('[forminator_form id="200"]'); ?>
                         </div>
                     </div>
                 </div>

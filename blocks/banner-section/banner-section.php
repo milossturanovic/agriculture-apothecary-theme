@@ -95,15 +95,48 @@ $bottom_right_banner = get_field('bottom_right_banner');
                             <?php
                             $image = $left_banner['image'];
                             if (!empty($image) && is_array($image) && !empty($image['url'])):
+                                // Get image dimensions
+                                $img_width = 570; // Desired width
+                                $img_height = 500; // Desired height
+                                
+                                // Get the image ID
+                                $image_id = $image['ID'];
+                                
+                                // Generate srcset
+                                $img_srcset = wp_get_attachment_image_srcset($image_id);
+                                $img_sizes = '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw';
+                                
+                                // Get optimized image URL
+                                $optimized_image = wp_get_attachment_image_src($image_id, array($img_width, $img_height));
+                                
+                                // Get WebP version if available
+                                $webp_url = str_replace(array('.jpg', '.jpeg', '.png'), '.webp', $optimized_image[0]);
+                                $webp_exists = file_exists(str_replace(home_url(), ABSPATH, $webp_url));
                             ?>
-                                <img
-                                    class="img-cover-banner"
-                                    src="<?php echo esc_url($image['url']); ?>"
-                                    alt="<?php echo esc_attr($image['alt'] ?? 'Banner Image'); ?>">
+                                <picture>
+                                    <?php if ($webp_exists): ?>
+                                        <source
+                                            srcset="<?php echo esc_url($webp_url); ?>"
+                                            type="image/webp"
+                                            sizes="<?php echo esc_attr($img_sizes); ?>">
+                                    <?php endif; ?>
+                                    <img
+                                        class="img-cover-banner"
+                                        src="<?php echo esc_url($optimized_image[0]); ?>"
+                                        srcset="<?php echo esc_attr($img_srcset); ?>"
+                                        sizes="<?php echo esc_attr($img_sizes); ?>"
+                                        width="<?php echo esc_attr($img_width); ?>"
+                                        height="<?php echo esc_attr($img_height); ?>"
+                                        loading="lazy"
+                                        alt="<?php echo esc_attr($image['alt'] ?? 'Banner Image'); ?>">
+                                </picture>
                             <?php else: ?>
                                 <img
                                     class="img-cover-banner"
                                     src="<?php echo get_template_directory_uri(); ?>/assets/images/banner/2-1-570x500.jpg"
+                                    width="570"
+                                    height="500"
+                                    loading="lazy"
                                     alt="Fallback Banner Image">
                             <?php endif; ?>
                         </div>
@@ -137,19 +170,57 @@ $bottom_right_banner = get_field('bottom_right_banner');
                             <div class="banner-overlay"></div>
                             <?php
                             $image_field = $top_right_banner['image'];
+                            $img_width = 570; // Desired width
+                            $img_height = 500; // Desired height
+                            
                             if (is_array($image_field) && !empty($image_field['url'])) {
+                                $image_id = $image_field['ID'];
                                 $image_url = $image_field['url'];
                                 $image_alt = $image_field['alt'] ?? 'Banner Image';
                             } elseif (is_numeric($image_field)) {
-                                $image_obj = wp_get_attachment_image_src($image_field, 'full');
+                                $image_id = $image_field;
+                                $image_obj = wp_get_attachment_image_src($image_field, array($img_width, $img_height));
                                 $image_url = $image_obj[0] ?? '';
                                 $image_alt = get_post_meta($image_field, '_wp_attachment_image_alt', true);
                             }
+                            
+                            if (!empty($image_id)):
+                                // Generate srcset
+                                $img_srcset = wp_get_attachment_image_srcset($image_id);
+                                $img_sizes = '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw';
+                                
+                                // Get optimized image
+                                $optimized_image = wp_get_attachment_image_src($image_id, array($img_width, $img_height));
+                                
+                                // Get WebP version if available
+                                $webp_url = str_replace(array('.jpg', '.jpeg', '.png'), '.webp', $optimized_image[0]);
+                                $webp_exists = file_exists(str_replace(home_url(), ABSPATH, $webp_url));
                             ?>
-                            <?php if (!empty($image_url)): ?>
-                                <img class="img-cover-banner" src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($image_alt); ?>">
+                                <picture>
+                                    <?php if ($webp_exists): ?>
+                                        <source
+                                            srcset="<?php echo esc_url($webp_url); ?>"
+                                            type="image/webp"
+                                            sizes="<?php echo esc_attr($img_sizes); ?>">
+                                    <?php endif; ?>
+                                    <img 
+                                        class="img-cover-banner"
+                                        src="<?php echo esc_url($optimized_image[0]); ?>"
+                                        srcset="<?php echo esc_attr($img_srcset); ?>"
+                                        sizes="<?php echo esc_attr($img_sizes); ?>"
+                                        width="<?php echo esc_attr($img_width); ?>"
+                                        height="<?php echo esc_attr($img_height); ?>"
+                                        loading="lazy"
+                                        alt="<?php echo esc_attr($image_alt); ?>">
+                                </picture>
                             <?php else: ?>
-                                <img class="img-cover-banner" src="<?php echo get_template_directory_uri(); ?>/assets/images/banner/2-2-570x235.jpg" alt="Fallback Banner Image">
+                                <img
+                                    class="img-cover-banner"
+                                    src="<?php echo get_template_directory_uri(); ?>/assets/images/banner/2-2-570x235.jpg"
+                                    width="570"
+                                    height="500"
+                                    loading="lazy"
+                                    alt="Fallback Banner Image">
                             <?php endif; ?>
                         </div>
                         <div class="banner-content text-position-left">
@@ -183,10 +254,49 @@ $bottom_right_banner = get_field('bottom_right_banner');
                             <?php
                             $image = $bottom_right_banner['image'];
                             if (!empty($image) && is_array($image) && !empty($image['url'])):
+                                // Get image dimensions
+                                $img_width = 570; // Desired width
+                                $img_height = 500; // Desired height
+                                
+                                // Get the image ID
+                                $image_id = $image['ID'];
+                                
+                                // Generate srcset
+                                $img_srcset = wp_get_attachment_image_srcset($image_id);
+                                $img_sizes = '(max-width: 767px) 100vw, (max-width: 991px) 50vw, 33vw';
+                                
+                                // Get optimized image
+                                $optimized_image = wp_get_attachment_image_src($image_id, array($img_width, $img_height));
+                                
+                                // Get WebP version if available
+                                $webp_url = str_replace(array('.jpg', '.jpeg', '.png'), '.webp', $optimized_image[0]);
+                                $webp_exists = file_exists(str_replace(home_url(), ABSPATH, $webp_url));
                             ?>
-                                <img class="img-cover-banner" src="<?php echo esc_url($image['url']); ?>" alt="<?php echo esc_attr($image['alt'] ?? 'Banner Image'); ?>">
+                                <picture>
+                                    <?php if ($webp_exists): ?>
+                                        <source
+                                            srcset="<?php echo esc_url($webp_url); ?>"
+                                            type="image/webp"
+                                            sizes="<?php echo esc_attr($img_sizes); ?>">
+                                    <?php endif; ?>
+                                    <img
+                                        class="img-cover-banner"
+                                        src="<?php echo esc_url($optimized_image[0]); ?>"
+                                        srcset="<?php echo esc_attr($img_srcset); ?>"
+                                        sizes="<?php echo esc_attr($img_sizes); ?>"
+                                        width="<?php echo esc_attr($img_width); ?>"
+                                        height="<?php echo esc_attr($img_height); ?>"
+                                        loading="lazy"
+                                        alt="<?php echo esc_attr($image['alt'] ?? 'Banner Image'); ?>">
+                                </picture>
                             <?php else: ?>
-                                <img class="img-cover-banner" src="<?php echo get_template_directory_uri(); ?>/assets/images/banner/2-3-570x235.jpg" alt="Fallback Banner Image">
+                                <img
+                                    class="img-cover-banner"
+                                    src="<?php echo get_template_directory_uri(); ?>/assets/images/banner/2-3-570x235.jpg"
+                                    width="570"
+                                    height="500"
+                                    loading="lazy"
+                                    alt="Fallback Banner Image">
                             <?php endif; ?>
                         </div>
                         <div class="banner-content text-position-left">
