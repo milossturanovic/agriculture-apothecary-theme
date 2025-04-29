@@ -891,3 +891,49 @@
         }
     }
 })(jQuery);
+
+
+
+
+
+// enables the smooth scroll to the topbar when clicking on a category, tag, or search form on the products page
+
+document.addEventListener('DOMContentLoaded', function() {
+    function scrollToTopbarIfMobile() {
+        if (window.innerWidth < 992) { // Only on mobile and tablet
+            const topbar = document.querySelector('.product-topbar');
+            if (topbar) {
+                topbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }
+
+    // When clicking on a category
+    document.querySelectorAll('.filter-category').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToTopbarIfMobile();
+            // Here you can also trigger your filtering logic if needed
+        });
+    });
+
+    // When clicking on a tag
+    document.querySelectorAll('.filter-tag').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            e.preventDefault();
+            scrollToTopbarIfMobile();
+            // Here you can also trigger your tag filtering logic if needed
+        });
+    });
+
+    // When submitting the search form
+    const searchForm = document.getElementById('product-search-form');
+    if (searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            scrollToTopbarIfMobile();
+            // Here you can also trigger your search function if needed
+        });
+    }
+});
+

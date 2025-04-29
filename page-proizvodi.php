@@ -99,18 +99,6 @@ get_header();
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
                 <div class="col-xl-9 col-lg-8 order-1 order-lg-2">
                     <div class="product-topbar">
                         <ul>
