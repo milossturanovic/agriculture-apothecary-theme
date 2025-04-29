@@ -3461,7 +3461,7 @@ blockquote p {
 
   width: 270px !important;
   height: 300px !important;
-  object-fit: contain !important;
+  object-fit: cover !important;
 }
 .product-img img.secondary-img {
   position: absolute;
@@ -5356,7 +5356,7 @@ blockquote p {
 }
 @media (max-width: 575px) {
   .product-topbar > ul > li:not(:last-child) {
-    margin-bottom: 15px;
+    margin-bottom: 0px;
   }
 }
 .product-topbar > ul li a {
